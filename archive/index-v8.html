@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefan Schmitt</title>
+  <meta name="description" content="Stefan Schmitt — Blockchain infrastructure, institutional adoption, education. Speaker, lecturer, builder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f4f4f5;
+      --card: #ffffff;
+      --border: #e4e4e7;
+      --border-h: #d4d4d8;
+      --text: #18181b;
+      --text-mid: #3f3f46;
+      --text-muted: #71717a;
+      --text-dim: #a1a1aa;
+      --blue: #2563eb;
+      --blue-bg: #dbeafe;
+      --green: #059669;
+      --green-bg: #d1fae5;
+      --amber: #d97706;
+      --amber-bg: #fef3c7;
+      --violet: #7c3aed;
+      --violet-bg: #ede9fe;
+      --slate: #64748b;
+      --r: 14px;
+      --g: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font: 400 15px/1.65 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--blue-bg); color: var(--blue); }
+    a { color: inherit; text-decoration: none; }
+
+    /* ═══ BENTO ═══ */
+    .bento {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 28px 16px 24px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--g);
+    }
+
+    /* ═══ CARD ═══ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+    .card:hover {
+      border-top-color: var(--border-h);
+      border-right-color: var(--border-h);
+      border-bottom-color: var(--border-h);
+    }
+
+    /* Section border colors */
+    .card.sb { border-left: 3px solid var(--blue); }
+    .card.sg { border-left: 3px solid var(--green); }
+    .card.sa { border-left: 3px solid var(--amber); }
+    .card.sv { border-left: 3px solid var(--violet); }
+    .card.ss { border-left: 3px solid var(--slate); }
+
+    /* ═══ HERO ═══ */
+    .hero { grid-column: 1 / 8; padding: 32px; }
+    .hero-row { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+    .avatar {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, #e0e7ff, #dbeafe, #d1fae5);
+      display: flex; align-items: center; justify-content: center;
+      font: 700 22px 'Inter'; color: var(--blue);
+      border: 3px solid var(--card); box-shadow: 0 0 0 1px var(--border);
+      flex-shrink: 0;
+    }
+    .hero-name { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; }
+    .hero-sub { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+    .hero-intro { font-size: 15px; color: var(--text-mid); line-height: 1.75; }
+    .hero-intro strong { color: var(--text); font-weight: 600; }
+
+    /* ═══ PROFILE ═══ */
+    .profile {
+      grid-column: 8 / 13;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 28px;
+    }
+    .pf-loc {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .pf-loc::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--text-dim);
+    }
+    .pf-links { display: flex; flex-direction: column; gap: 0; }
+    .pf-link {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; color: var(--text-mid);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pf-link:last-child { border-bottom: none; }
+    .pf-link:hover { color: var(--blue); }
+    .pf-link .arr { color: var(--text-dim); font-size: 13px; }
+    .pf-status {
+      margin-top: 20px;
+      font-size: 12px; font-weight: 500; color: var(--green);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .pf-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+
+    /* ═══ EXPERIENCE ═══ */
+    .exp-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .exp-logo {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font: 700 12px 'Inter'; color: var(--text-dim); flex-shrink: 0;
+    }
+    .exp-org { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+    .exp-desc { font-size: 12px; color: var(--text-muted); }
+
+    .roles { display: grid; }
+    .role {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      padding: 9px 0; border-top: 1px solid var(--border);
+    }
+    .role:first-child .rn { color: var(--blue); }
+    .rn { font-size: 14px; font-weight: 600; }
+    .rp { font-size: 11px; color: var(--text-dim); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+    .exp-stats {
+      display: flex; gap: 10px; margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .xstat {
+      flex: 1; text-align: center; padding: 8px 4px;
+      background: var(--bg); border-radius: 8px;
+    }
+    .xstat-n { font-size: 17px; font-weight: 700; letter-spacing: -0.5px; }
+    .xstat-l { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+    /* ═══ SPEAKING: TOPICS STACKED ═══ */
+    .topic-stack {
+      grid-column: 1 / 5;
+      display: flex; flex-direction: column;
+      gap: var(--g);
+    }
+    .tc {
+      flex: 1;
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: var(--r);
+      padding: 18px 20px;
+      display: flex; flex-direction: column; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .tc:hover { border-top-color: var(--border-h); border-right-color: var(--border-h); border-bottom-color: var(--border-h); }
+    .tc-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .tc-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ═══ SPEAKING: MAIN ═══ */
+    .speak-main { grid-column: 5 / 13; }
+    .speak-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px; }
+    .speak-intro { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 20px; }
+    .ev-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .ev {
+      font-size: 12px; font-weight: 500; padding: 4px 12px;
+      border-radius: 20px; background: var(--bg); color: var(--text-mid);
+      border: 1px solid var(--border);
+    }
+    .ev-pod { font-style: italic; color: var(--text-muted); }
+    .ev-more { border-style: dashed; color: var(--text-dim); }
+    .speak-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; background: var(--text); color: var(--card);
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+    }
+    .speak-cta:hover { color: var(--card); opacity: 0.85; }
+
+    /* ═══ TEACHING ═══ */
+    .th { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .tl {
+      width: 38px; height: 38px; border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font: 700 11px 'Inter'; flex-shrink: 0;
+    }
+    .tl-fs { background: var(--amber-bg); color: var(--amber); }
+    .tl-ets { background: var(--green-bg); color: var(--green); }
+    .t-org { font-size: 15px; font-weight: 600; }
+    .t-sub { font-size: 12px; color: var(--text-muted); }
+    .t-text { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+    .prg-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+    .prg {
+      font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+      background: var(--bg); color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+
+    /* ═══ EDUCATION ═══ */
+    .edu-items { display: flex; flex-direction: column; gap: 18px; }
+    .edu-item { display: flex; align-items: center; gap: 10px; }
+    .edu-ico {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font: 700 9px 'Inter'; flex-shrink: 0;
+    }
+    .edu-ico-fs { background: var(--violet-bg); color: var(--violet); }
+    .edu-ico-ism { background: var(--blue-bg); color: var(--blue); }
+    .edu-t { font-size: 14px; font-weight: 600; }
+    .edu-d { font-size: 12px; color: var(--text-dim); }
+
+    /* ═══ PROJECTS ═══ */
+    .pj-name { font-size: 17px; font-weight: 700; display: inline; }
+    .pj-badge {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px;
+      background: var(--amber-bg); color: var(--amber);
+      margin-left: 8px; display: inline-block; vertical-align: middle;
+    }
+    .pj-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
+    .tt { display: flex; gap: 4px; margin-top: 12px; flex-wrap: wrap; }
+    .tt span {
+      font-size: 11px; color: var(--text-dim); padding: 2px 8px;
+      border-radius: 5px; background: var(--bg);
+    }
+
+    /* ═══ REFERENCES ═══ */
+    .rq {
+      font-size: 14px; color: var(--text-mid); line-height: 1.75;
+      font-style: italic; margin-bottom: 16px;
+      padding-left: 14px; border-left: 2px solid var(--border);
+    }
+    .ra { font-size: 13px; font-weight: 600; }
+    .rr { font-size: 11px; color: var(--text-dim); }
+
+    /* ═══ FOOTER ═══ */
+    .ft {
+      grid-column: 1 / -1;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 4px; font-size: 12px; color: var(--text-dim);
+    }
+    .ft a { color: var(--text-dim); }
+    .ft a:hover { color: var(--text-muted); }
+    .ft-links { display: flex; gap: 16px; list-style: none; }
+
+    /* ═══ ANIMATE ═══ */
+    .card, .topic-stack {
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s;
+    }
+    .card.v, .topic-stack.v { opacity: 1; transform: none; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .bento { grid-template-columns: 1fr; }
+      .bento > * { grid-column: 1 / -1 !important; }
+      .exp-stats { flex-wrap: wrap; }
+      .ft { flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bento">
+
+    <!-- ═══ HERO ═══ -->
+    <div class="card hero" style="grid-column: 1/8;">
+      <div class="hero-row">
+        <div class="avatar">SS</div>
+        <div>
+          <h1 class="hero-name">Stefan Schmitt</h1>
+          <div class="hero-sub">Blockchain Infrastructure &middot; GTM &amp; Education</div>
+        </div>
+      </div>
+      <p class="hero-intro">
+        I've spent <strong>seven years</strong> at the intersection of blockchain infrastructure and institutional adoption&thinsp;&mdash;&thinsp;from research at the <strong>Frankfurt School Blockchain Center</strong>, to building <strong>Blockdaemon's</strong> European business as their first sales hire, to teaching digital assets to executives. I like building things: commercial engines, educational programmes, and lately, my own apps.
+      </p>
+    </div>
+
+    <!-- ═══ PROFILE ═══ -->
+    <div class="card profile" style="grid-column: 8/13;">
+      <div>
+        <div class="pf-loc">Frankfurt, Germany</div>
+        <div class="pf-links">
+          <a href="mailto:stefan.schmitt.de@googlemail.com" class="pf-link">Email <span class="arr">&rarr;</span></a>
+          <a href="https://linkedin.com/in/stefan-schmitt" target="_blank" class="pf-link">LinkedIn <span class="arr">&rarr;</span></a>
+          <a href="#" class="pf-link">Download CV <span class="arr">&darr;</span></a>
+        </div>
+      </div>
+      <div class="pf-status"><span class="pf-dot"></span> Open to speaking engagements</div>
+    </div>
+
+    <!-- ═══ EXPERIENCE: BLOCKDAEMON ═══ -->
+    <div class="card sb" style="grid-column: 1/7;">
+      <div class="exp-head">
+        <div class="exp-logo">BD</div>
+        <div>
+          <div class="exp-org">Blockdaemon</div>
+          <div class="exp-desc">Blockchain Infrastructure &middot; First sales hire globally</div>
+        </div>
+      </div>
+      <div class="roles">
+        <div class="role"><span class="rn">Protocol Partnerships</span><span class="rp">2025 &mdash; 2026</span></div>
+        <div class="role"><span class="rn">Sales Director EMEA</span><span class="rp">2022 &mdash; 2025</span></div>
+        <div class="role"><span class="rn">Relationship Manager</span><span class="rp">2021 &mdash; 2022</span></div>
+        <div class="role"><span class="rn">Business Development</span><span class="rp">2020 &mdash; 2021</span></div>
+      </div>
+      <div class="exp-stats">
+        <div class="xstat"><div class="xstat-n">&euro;5M+</div><div class="xstat-l">EMEA Pipeline</div></div>
+        <div class="xstat"><div class="xstat-n">85+</div><div class="xstat-l">Protocol Partners</div></div>
+        <div class="xstat"><div class="xstat-n">50+</div><div class="xstat-l">Enterprise Clients</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ EXPERIENCE: FRANKFURT SCHOOL ═══ -->
+    <div class="card sb" style="grid-column: 7/13;">
+      <div class="exp-head">
+        <div class="exp-logo" style="background:var(--blue-bg);color:var(--blue);">FS</div>
+        <div>
+          <div class="exp-org">Frankfurt School</div>
+          <div class="exp-desc">Finance &amp; Management &middot; Blockchain Center &middot; Lecturer</div>
+        </div>
+      </div>
+      <div class="roles">
+        <div class="role"><span class="rn">University Lecturer</span><span class="rp">2022 &mdash; now</span></div>
+        <div class="role"><span class="rn">Project Manager, FSBC</span><span class="rp">2019 &mdash; 2021</span></div>
+        <div class="role"><span class="rn">Associate, FSBC</span><span class="rp">2018 &mdash; 2019</span></div>
+        <div class="role"><span class="rn">MSc Finance</span><span class="rp">2016 &mdash; 2018</span></div>
+      </div>
+      <div class="exp-stats">
+        <div class="xstat"><div class="xstat-n">200+</div><div class="xstat-l">Professionals Taught</div></div>
+        <div class="xstat"><div class="xstat-n">&euro;2M</div><div class="xstat-l">EU Project Budget</div></div>
+        <div class="xstat"><div class="xstat-n">8+</div><div class="xstat-l">Years Connected</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ SPEAKING: TOPICS (stacked left, narrow) ═══ -->
+    <div class="topic-stack" style="grid-column: 1/5;">
+      <div class="tc">
+        <div class="tc-name">Staking &amp; Validator Economics</div>
+        <div class="tc-desc">PoS mechanics, validator infrastructure, slashing risks, institutional staking.</div>
+      </div>
+      <div class="tc">
+        <div class="tc-name">Institutional Blockchain Adoption</div>
+        <div class="tc-desc">How banks, custodians, and asset managers integrate blockchain infrastructure.</div>
+      </div>
+      <div class="tc">
+        <div class="tc-name">Product-Market Fit &amp; GTM</div>
+        <div class="tc-desc">Go-to-market for blockchain products. Pipeline, partnerships, PMF analysis.</div>
+      </div>
+    </div>
+
+    <!-- ═══ SPEAKING: MAIN (wider right) ═══ -->
+    <div class="card sg speak-main" style="grid-column: 5/13;">
+      <div class="speak-title">Speaking &amp; Panels</div>
+      <p class="speak-intro">I speak about blockchain infrastructure, staking economics, and go-to-market strategy at conferences, executive programmes, and on podcasts. I make complex technical topics accessible for institutional audiences.</p>
+      <div class="ev-row">
+        <span class="ev">Token 2049</span>
+        <span class="ev">Cardano Summit</span>
+        <span class="ev">Digital Asset Summit</span>
+        <span class="ev">Crypto Assets Conference</span>
+        <span class="ev">Gateway</span>
+        <span class="ev ev-pod">Hedgework</span>
+        <span class="ev ev-pod">Stacks</span>
+        <span class="ev ev-more">+ more</span>
+      </div>
+      <a href="mailto:stefan.schmitt.de@googlemail.com?subject=Speaking%20Inquiry" class="speak-cta">Invite me to speak &rarr;</a>
+    </div>
+
+    <!-- ═══ TEACHING: FS ═══ -->
+    <div class="card sa" style="grid-column: 1/7;">
+      <div class="th">
+        <div class="tl tl-fs">FS</div>
+        <div>
+          <div class="t-org">Frankfurt School of Finance &amp; Management</div>
+          <div class="t-sub">University Lecturer &middot; since 2022</div>
+        </div>
+      </div>
+      <p class="t-text">Self-designed curricula on staking, digital assets, and Web3 across six programme types. From 12-hour deep-dives on validator architecture to compact executive modules. 200+ professionals and executives taught.</p>
+      <div class="prg-row">
+        <span class="prg">MBA</span>
+        <span class="prg">EMBA</span>
+        <span class="prg">MSc Blockchain</span>
+        <span class="prg">MSc Fin. Law</span>
+        <span class="prg">Exec. Education</span>
+        <span class="prg">Bachelor</span>
+      </div>
+    </div>
+
+    <!-- ═══ TEACHING: ETS ═══ -->
+    <div class="card sa" style="grid-column: 7/13;">
+      <div class="th">
+        <div class="tl tl-ets">ETS</div>
+        <div>
+          <div class="t-org">European Tech School</div>
+          <div class="t-sub">Guest Lecturer</div>
+        </div>
+      </div>
+      <p class="t-text">Focused modules for professionals transitioning into Web3 and financial institutions evaluating blockchain infrastructure. Designed for decision-makers who need to evaluate, not build.</p>
+      <div class="prg-row">
+        <span class="prg">Professional Certificate</span>
+        <span class="prg">Executive Module</span>
+      </div>
+    </div>
+
+    <!-- ═══ EDUCATION (left, narrow) ═══ -->
+    <div class="card sv" style="grid-column: 1/5;">
+      <div class="edu-items">
+        <div class="edu-item">
+          <div class="edu-ico edu-ico-fs">FS</div>
+          <div>
+            <div class="edu-t">MSc Finance</div>
+            <div class="edu-d">Frankfurt School &middot; 2016&ndash;2018</div>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-ico edu-ico-ism">ISM</div>
+          <div>
+            <div class="edu-t">BA Int'l Management</div>
+            <div class="edu-d">ISM &middot; 2013&ndash;2016</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PROJECT: HIREMARK (right, wider) ═══ -->
+    <div class="card sv" style="grid-column: 5/13;">
+      <div>
+        <span class="pj-name">Hiremark</span>
+        <span class="pj-badge">Coming Soon</span>
+      </div>
+      <p class="pj-desc">A CRM for job seekers&thinsp;&mdash;&thinsp;pipeline tracking, contact management, interview preparation, and application analytics. Built to bring structure to the job search.</p>
+      <div class="tt">
+        <span>Next.js</span>
+        <span>Supabase</span>
+        <span>PWA</span>
+      </div>
+    </div>
+
+    <!-- ═══ REFERENCES: 3 side by side ═══ -->
+    <div class="card ss" style="grid-column: 1/5;">
+      <p class="rq">I would hire him again without hesitation. Any organization that earns his commitment will gain someone who raises the standard for the entire team.</p>
+      <div><div class="ra">Konstantin Richter</div><div class="rr">CEO &amp; Founder, Blockdaemon</div></div>
+    </div>
+    <div class="card ss" style="grid-column: 5/9;">
+      <p class="rq">Stefan makes a sales organization better by being in it. He brings structure, technical depth, and sincere care for his clients and colleagues.</p>
+      <div><div class="ra">Andrew Vranjes</div><div class="rr">Chief Revenue Officer, Blockdaemon</div></div>
+    </div>
+    <div class="card ss" style="grid-column: 9/13;">
+      <p class="rq">Analytical rigor with genuine commercial instinct. Direct, honest, always constructive.</p>
+      <div><div class="ra">Demetrios Skalkotos</div><div class="rr">Chief DeFi &amp; Protocol Officer, Blockdaemon</div></div>
+    </div>
+
+    <!-- ═══ FOOTER ═══ -->
+    <div class="ft">
+      <span>&copy; 2026 Stefan Schmitt</span>
+      <ul class="ft-links">
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.card, .topic-stack').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>

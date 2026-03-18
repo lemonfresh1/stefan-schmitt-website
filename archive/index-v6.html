@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stefan Schmitt</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --text:    #1a1a1a;
+      --muted:   #666666;
+      --dim:     #999999;
+      --border:  #e5e5e5;
+      --bg:      #ffffff;
+      --bg-card: #fafafa;
+      --font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font: 400 16px/1.7 var(--font); color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: var(--text); text-decoration: none; }
+    a:hover { color: var(--muted); }
+
+    /* ── Page Container ────────────────────── */
+    main { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Header ────────────────────────────── */
+    header {
+      padding: 80px 0 0;
+      max-width: 960px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #e5e5e5, #d4d4d4);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font: 700 20px var(--font); color: var(--muted);
+    }
+    .header-text h1 {
+      font-size: 24px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2;
+    }
+    .header-sub {
+      font-size: 15px; color: var(--muted); margin-top: 2px;
+    }
+    .header-links {
+      display: flex; gap: 16px; margin-top: 6px;
+    }
+    .header-links a {
+      font-size: 14px; color: var(--dim);
+      transition: color 0.15s;
+    }
+    .header-links a:hover { color: var(--text); }
+
+    .header-intro {
+      margin-top: 24px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+    .header-intro strong { color: var(--text); font-weight: 500; }
+
+    /* ── Section Layout: Label Left, Content Right ── */
+    .section {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 48px;
+      padding: 96px 0;
+      border-top: 1px solid var(--border);
+    }
+    .section:first-of-type { margin-top: 64px; }
+
+    .section-label {
+      font: 600 13px var(--font);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+      position: sticky;
+      top: 32px;
+      height: fit-content;
+    }
+
+    .section-content {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .section {
+        display: block;
+        padding: 64px 0;
+      }
+      .section-label {
+        position: static;
+        margin-bottom: 24px;
+      }
+    }
+
+    /* ── Card ───────────────────────────────── */
+    .card {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--dim); }
+
+    /* ── Experience Cards ────────────────────── */
+    .exp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .exp-cards { grid-template-columns: 1fr; } }
+
+    .exp-top {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+    }
+    .exp-logo {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font: 700 11px var(--font); color: var(--dim); flex-shrink: 0;
+    }
+    .exp-org { font-size: 16px; font-weight: 600; }
+    .exp-meta { font-size: 13px; color: var(--dim); }
+
+    .exp-text {
+      font-size: 15px; color: var(--muted); line-height: 1.7;
+    }
+    .exp-text strong { color: var(--text); font-weight: 500; }
+
+    .exp-roles {
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .role-pill {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 10px; border-radius: 4px;
+      background: var(--bg-card); color: var(--muted);
+    }
+
+    /* ── Education Row ──────────────────────── */
+    .edu-row {
+      display: flex; gap: 32px; margin-top: 8px;
+      font-size: 14px; color: var(--muted);
+    }
+    .edu-row strong { color: var(--text); font-weight: 500; }
+    @media (max-width: 700px) { .edu-row { flex-direction: column; gap: 8px; } }
+
+    /* ── Speaking ────────────────────────────── */
+    .speak-intro {
+      font-size: 15px; color: var(--muted); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .topics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .topics { grid-template-columns: 1fr; } }
+    .topic-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .topic-card:hover { border-color: var(--dim); }
+    .topic-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .topic-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    .events-row {
+      margin-top: 20px;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    }
+    .events-label { font-size: 13px; font-weight: 600; color: var(--dim); }
+    .ev { font-size: 13px; color: var(--muted); }
+    .ev::after { content: ' · '; color: var(--dim); }
+    .ev:last-child::after { content: ''; }
+
+    .speak-cta {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .speak-cta a { color: var(--text); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+    .speak-cta a:hover { color: var(--muted); }
+
+    /* ── Teaching ────────────────────────────── */
+    .teach-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .teach-cards { grid-template-columns: 1fr; } }
+    .teach-org { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .teach-sub { font-size: 13px; color: var(--dim); margin-bottom: 10px; }
+    .teach-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .prg-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+    .prg {
+      font-size: 11px; font-weight: 500; padding: 2px 8px;
+      border-radius: 3px; background: var(--bg-card); color: var(--muted);
+    }
+
+    /* ── Projects ────────────────────────────── */
+    .proj-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .proj-cards { grid-template-columns: 1fr; } }
+    .proj-name { font-size: 16px; font-weight: 600; }
+    .proj-status {
+      font-size: 12px; font-weight: 500; color: var(--dim);
+      margin-left: 8px;
+    }
+    .proj-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
+    .proj-tech {
+      display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+    }
+    .proj-tech span {
+      font-size: 12px; color: var(--dim);
+      padding: 2px 8px; border-radius: 3px; background: var(--bg-card);
+    }
+
+    /* ── References ──────────────────────────── */
+    .ref-cards { display: grid; gap: 16px; }
+    .ref-quote {
+      font-size: 15px; color: var(--muted); line-height: 1.8;
+      font-style: italic;
+      padding-left: 16px;
+      border-left: 2px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .ref-footer { display: flex; align-items: center; gap: 10px; }
+    .ref-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font: 600 10px var(--font); color: var(--dim); flex-shrink: 0;
+    }
+    .ref-name { font-size: 14px; font-weight: 500; }
+    .ref-role { font-size: 13px; color: var(--dim); }
+
+    /* ── Footer ──────────────────────────────── */
+    footer {
+      max-width: 960px; margin: 0 auto; padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--dim);
+    }
+    footer a { color: var(--dim); }
+    footer a:hover { color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+    @media (max-width: 700px) { footer { flex-direction: column; gap: 8px; text-align: center; } }
+
+    /* ── Animations ──────────────────────────── */
+    .fade { opacity: 0; transform: translateY(12px); transition: opacity 0.5s, transform 0.5s; }
+    .fade.vis { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Header — no nav bar, just the intro -->
+  <header>
+    <div class="header-row">
+      <div class="avatar">SS</div>
+      <div class="header-text">
+        <h1>Stefan Schmitt</h1>
+        <div class="header-sub">Frankfurt &middot; Blockchain Infrastructure &middot; GTM &amp; Education</div>
+        <div class="header-links">
+          <a href="mailto:stefan.schmitt.de@googlemail.com">Email</a>
+          <a href="https://linkedin.com/in/stefan-schmitt" target="_blank">LinkedIn</a>
+          <a href="#">CV (PDF)</a>
+        </div>
+      </div>
+    </div>
+    <p class="header-intro">
+      I've spent seven years at the intersection of blockchain infrastructure and institutional adoption&nbsp;&mdash; from research at the <strong>Frankfurt School Blockchain Center</strong>, to building <strong>Blockdaemon's</strong> European business as their first sales hire, to teaching digital assets to executives. I like building things: commercial engines, educational programmes, and lately, my own apps.
+    </p>
+  </header>
+
+  <main>
+
+    <!-- Experience -->
+    <div class="section">
+      <div class="section-label">Experience</div>
+      <div class="section-content">
+        <div class="exp-cards fade">
+          <div class="card">
+            <div class="exp-top">
+              <div class="exp-logo">BD</div>
+              <div>
+                <div class="exp-org">Blockdaemon</div>
+                <div class="exp-meta">2020 &mdash; 2026 &middot; 4 roles</div>
+              </div>
+            </div>
+            <p class="exp-text">
+              Joined as the <strong>first sales hire globally</strong>. Built the EMEA institutional business from zero to <strong>&euro;5M+ pipeline</strong>, closing 50+ enterprise clients. Moved into protocol partnerships&nbsp;&mdash; managing 85+ integrations and building a <strong>&euro;10M+ partnership pipeline</strong>.
+            </p>
+            <div class="exp-roles">
+              <span class="role-pill">Protocol Partnerships</span>
+              <span class="role-pill">Sales Director EMEA</span>
+              <span class="role-pill">Relationship Manager</span>
+              <span class="role-pill">Business Development</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="exp-top">
+              <div class="exp-logo">FS</div>
+              <div>
+                <div class="exp-org">Frankfurt School</div>
+                <div class="exp-meta">2016 &mdash; present &middot; Student, Researcher, Lecturer</div>
+              </div>
+            </div>
+            <p class="exp-text">
+              Started as an MSc Finance student, joined the <strong>Blockchain Center</strong> to manage EU research projects (&euro;2M budget), then returned as <strong>University Lecturer</strong>&nbsp;&mdash; designing and delivering courses on staking, digital assets, and Web3 across six programme types. <strong>200+ professionals taught</strong>.
+            </p>
+            <div class="exp-roles">
+              <span class="role-pill">University Lecturer</span>
+              <span class="role-pill">Project Manager, FSBC</span>
+              <span class="role-pill">Associate, FSBC</span>
+              <span class="role-pill">MSc Finance</span>
+            </div>
+          </div>
+        </div>
+        <div class="edu-row fade">
+          <div><strong>MSc Finance</strong> &middot; Frankfurt School, 2016&ndash;2018</div>
+          <div><strong>BA Int'l Management</strong> &middot; ISM, 2013&ndash;2016</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Speaking -->
+    <div class="section" id="speaking">
+      <div class="section-label">Speaking</div>
+      <div class="section-content">
+        <p class="speak-intro fade">I speak about blockchain infrastructure, staking economics, and go-to-market strategy at conferences, executive programmes, and on podcasts.</p>
+        <div class="topics fade">
+          <div class="topic-card">
+            <div class="topic-title">Staking &amp; Validator Economics</div>
+            <div class="topic-desc">Proof-of-stake mechanics, validator infrastructure, slashing risks, and institutional staking operations.</div>
+          </div>
+          <div class="topic-card">
+            <div class="topic-title">Institutional Blockchain Adoption</div>
+            <div class="topic-desc">How banks, custodians, and asset managers integrate blockchain infrastructure.</div>
+          </div>
+          <div class="topic-card">
+            <div class="topic-title">Product-Market Fit &amp; GTM</div>
+            <div class="topic-desc">Go-to-market for blockchain products. Protocol partnerships, pipeline building, PMF analysis.</div>
+          </div>
+        </div>
+        <div class="events-row fade">
+          <span class="events-label">10+ events incl.</span>
+          <span class="ev">Token 2049</span>
+          <span class="ev">Cardano Summit</span>
+          <span class="ev">Digital Asset Summit</span>
+          <span class="ev">Crypto Assets Conference</span>
+          <span class="ev">Gateway</span>
+          <span class="ev">Hedgework</span>
+          <span class="ev">Stacks</span>
+          <span class="ev">and others</span>
+        </div>
+        <div class="speak-cta fade">
+          <a href="mailto:stefan.schmitt.de@googlemail.com?subject=Speaking%20Inquiry">Invite me to speak &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teaching -->
+    <div class="section" id="teaching">
+      <div class="section-label">Teaching</div>
+      <div class="section-content">
+        <div class="teach-cards fade">
+          <div class="card">
+            <div class="teach-org">Frankfurt School of Finance &amp; Management</div>
+            <div class="teach-sub">University Lecturer &middot; since 2022</div>
+            <p class="teach-text">Self-designed curricula on staking, digital assets, and Web3. From 12-hour deep-dives on validator architecture to compact executive modules. 200+ professionals and executives taught.</p>
+            <div class="prg-row">
+              <span class="prg">MBA</span>
+              <span class="prg">EMBA</span>
+              <span class="prg">MSc Blockchain</span>
+              <span class="prg">MSc Financial Law</span>
+              <span class="prg">Exec. Education</span>
+              <span class="prg">Bachelor</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="teach-org">European Tech School</div>
+            <div class="teach-sub">Guest Lecturer</div>
+            <p class="teach-text">Focused modules for professionals transitioning into Web3 and financial institutions evaluating blockchain infrastructure. Designed for decision-makers who need to evaluate and invest, not build.</p>
+            <div class="prg-row">
+              <span class="prg">Professional Certificate</span>
+              <span class="prg">Executive Module</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section" id="projects">
+      <div class="section-label">Projects</div>
+      <div class="section-content">
+        <div class="proj-cards fade">
+          <div class="card">
+            <div><span class="proj-name">Hiremark</span><span class="proj-status">&middot; Coming soon</span></div>
+            <p class="proj-desc">Job search management&nbsp;&mdash; a CRM for your applications. Pipeline tracking, contact management, interview prep, and analytics.</p>
+            <div class="proj-tech">
+              <span>Next.js</span>
+              <span>Supabase</span>
+              <span>PWA</span>
+            </div>
+          </div>
+          <div class="card" style="opacity: 0.4;">
+            <div><span class="proj-name">More in the works</span></div>
+            <p class="proj-desc">A few more ideas taking shape.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- References -->
+    <div class="section" id="references">
+      <div class="section-label">References</div>
+      <div class="section-content">
+        <div class="ref-cards fade">
+          <div class="card">
+            <p class="ref-quote">If he were to apply at Blockdaemon tomorrow, I would hire him again without hesitation. Any organization that earns his commitment will gain someone who raises the standard for the entire team.</p>
+            <div class="ref-footer">
+              <div class="ref-avatar">KR</div>
+              <div><div class="ref-name">Konstantin Richter</div><div class="ref-role">CEO &amp; Founder, Blockdaemon</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <p class="ref-quote">Stefan is the type of professional who makes a sales organization better by being in it. He brings structure, technical depth, and a sincere care for his clients and colleagues.</p>
+            <div class="ref-footer">
+              <div class="ref-avatar">AV</div>
+              <div><div class="ref-name">Andrew Vranjes</div><div class="ref-role">Chief Revenue Officer, Blockdaemon</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <p class="ref-quote">Stefan combines analytical rigor with genuine commercial instinct. Direct, honest, always constructive.</p>
+            <div class="ref-footer">
+              <div class="ref-avatar">DS</div>
+              <div><div class="ref-name">Demetrios Skalkotos</div><div class="ref-role">Chief DeFi &amp; Protocol Officer, Blockdaemon</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>&copy; 2026 Stefan Schmitt</span>
+    <ul class="footer-links">
+      <li><a href="/impressum">Impressum</a></li>
+      <li><a href="/datenschutz">Datenschutz</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>

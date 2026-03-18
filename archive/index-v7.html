@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefan Schmitt — Blockchain Infrastructure, GTM & Education</title>
+  <meta name="description" content="Stefan Schmitt — 7+ years in blockchain infrastructure, institutional adoption, and education. Speaker, lecturer, builder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #09090b;
+      --surface: #131316;
+      --surface-alt: #1a1a1f;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.14);
+      --text: #f0f0f0;
+      --text-sec: #8b8b8b;
+      --text-dim: #555;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --accent-soft: rgba(99,102,241,0.10);
+      --accent-glow: rgba(99,102,241,0.20);
+      --radius: 16px;
+      --gap: 14px;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font: 400 15px/1.65 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ambient glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%; left: -30%;
+      width: 160%; height: 160%;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(99,102,241,0.035) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(99,102,241,0.02) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: var(--text); text-decoration: none; transition: color 0.2s var(--ease); }
+    a:hover { color: var(--accent-hover); }
+
+    /* ══════════════ BENTO GRID ══════════════ */
+    .bento {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 56px 20px 24px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap);
+    }
+
+    /* ── Section Labels ── */
+    .section-label {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: 600 11px/1 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      padding: 28px 0 2px;
+    }
+    .section-label::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    /* ── Base Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition:
+        transform 0.3s var(--ease),
+        border-color 0.3s var(--ease),
+        box-shadow 0.3s var(--ease);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px var(--border-hover);
+    }
+
+    /* ══════════════ HERO ══════════════ */
+    .hero-main {
+      grid-column: span 8;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 36px;
+    }
+    .avatar {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-soft), rgba(99,102,241,0.04));
+      border: 2px solid rgba(99,102,241,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font: 600 22px 'Inter'; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .hero-content { flex: 1; }
+    .hero-name {
+      font-size: 30px; font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1.15;
+    }
+    .hero-sub {
+      font-size: 14px; color: var(--text-sec);
+      margin-top: 4px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .hero-sub .sep { color: var(--text-dim); }
+    .hero-intro {
+      font-size: 15px; color: var(--text-sec);
+      line-height: 1.75; margin-top: 18px;
+      max-width: 560px;
+    }
+    .hero-intro strong { color: var(--text); font-weight: 500; }
+
+    /* Hero Links Card */
+    .hero-links {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      padding: 32px 28px;
+    }
+    .link-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; color: var(--text-sec);
+      transition: color 0.2s var(--ease);
+    }
+    .link-item:hover { color: var(--text); }
+    .link-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+    }
+    .link-item:hover .link-icon {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .link-icon svg { width: 16px; height: 16px; stroke: var(--text-sec); stroke-width: 1.5; fill: none; }
+    .link-item:hover .link-icon svg { stroke: var(--accent); }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 4px;
+      font-size: 12px; font-weight: 600;
+      color: var(--accent);
+      padding: 6px 14px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 100px;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ══════════════ EXPERIENCE ══════════════ */
+    .exp-bd { grid-column: span 7; }
+    .exp-fs { grid-column: span 5; }
+
+    .exp-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
+    }
+    .exp-logo {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font: 700 12px 'Inter'; color: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .exp-title { font-size: 17px; font-weight: 600; }
+    .exp-meta { font-size: 13px; color: var(--text-dim); margin-top: 1px; }
+    .exp-text { font-size: 14px; color: var(--text-sec); line-height: 1.75; }
+    .exp-text strong { color: var(--text); font-weight: 500; }
+
+    .exp-roles {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .pill {
+      font-size: 12px; font-weight: 500;
+      padding: 4px 12px; border-radius: 6px;
+      background: var(--surface-alt);
+      color: var(--text-sec);
+      border: 1px solid var(--border);
+    }
+
+    /* ══════════════ SPEAKING ══════════════ */
+    .topic { grid-column: span 4; }
+    .topic .card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .topic .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .topic .card:hover::before { opacity: 1; }
+    .topic-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .topic-desc { font-size: 13px; color: var(--text-sec); line-height: 1.65; }
+
+    .speak-strip {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 18px 28px;
+    }
+    .events-list {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    }
+    .event-badge {
+      font-size: 12px; font-weight: 500;
+      padding: 5px 12px; border-radius: 6px;
+      background: var(--surface-alt);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .event-badge:hover { border-color: var(--border-hover); color: var(--text-sec); }
+
+    .speak-cta {
+      font-size: 13px; font-weight: 600;
+      color: var(--accent);
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(99,102,241,0.15);
+      transition: all 0.25s var(--ease);
+    }
+    .speak-cta:hover {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      gap: 10px;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    /* ══════════════ TEACHING ══════════════ */
+    .teach { grid-column: span 6; }
+    .teach-org { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
+    .teach-role { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; }
+    .teach-text { font-size: 14px; color: var(--text-sec); line-height: 1.7; }
+    .prg-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 16px; }
+    .prg {
+      font-size: 11px; font-weight: 500;
+      padding: 3px 9px; border-radius: 4px;
+      background: var(--surface-alt); color: var(--text-dim);
+    }
+
+    /* ══════════════ PROJECTS ══════════════ */
+    .proj-main { grid-column: span 8; }
+    .proj-side { grid-column: span 4; }
+
+    .proj-name { font-size: 18px; font-weight: 600; display: inline; }
+    .proj-status {
+      font-size: 11px; font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 3px 12px;
+      border-radius: 100px;
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .proj-desc {
+      font-size: 14px; color: var(--text-sec);
+      line-height: 1.75; margin-top: 12px;
+    }
+    .proj-tech { display: flex; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+    .proj-tech span {
+      font-size: 12px; color: var(--text-dim); font-weight: 500;
+      padding: 4px 12px; border-radius: 6px;
+      background: var(--surface-alt); border: 1px solid var(--border);
+    }
+
+    .proj-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 100%; min-height: 140px;
+      color: var(--text-dim); font-size: 14px;
+      gap: 8px;
+    }
+    .proj-placeholder-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--surface-alt);
+      border: 1px dashed var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--text-dim);
+    }
+
+    /* ══════════════ REFERENCES SLIDER ══════════════ */
+    .refs-wrap {
+      grid-column: 1 / -1;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .refs-label {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .refs-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    .slider { position: relative; overflow: hidden; }
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .slide {
+      min-width: 100%;
+      padding-right: 40px;
+    }
+    .ref-quote {
+      font-size: 19px; font-weight: 400;
+      line-height: 1.8;
+      color: var(--text-sec);
+      font-style: italic;
+      max-width: 700px;
+      position: relative;
+      padding-left: 24px;
+    }
+    .ref-quote::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 4px;
+      width: 3px; height: calc(100% - 8px);
+      background: linear-gradient(180deg, var(--accent), transparent);
+      border-radius: 2px;
+    }
+
+    .ref-attribution {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 24px; padding-left: 24px;
+    }
+    .ref-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent-soft);
+      border: 1px solid rgba(99,102,241,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font: 600 12px 'Inter'; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .ref-name { font-size: 14px; font-weight: 600; }
+    .ref-role { font-size: 13px; color: var(--text-dim); margin-top: 1px; }
+
+    .slider-nav {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 28px; padding-left: 24px;
+    }
+    .dot {
+      width: 32px; height: 3px;
+      border-radius: 2px;
+      background: var(--text-dim);
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+    .dot.active {
+      background: var(--accent);
+      width: 48px;
+    }
+    .dot:hover { background: var(--text-sec); }
+
+    /* ══════════════ FOOTER ══════════════ */
+    footer {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 4px 8px;
+      font-size: 13px; color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+    }
+    footer a { color: var(--text-dim); }
+    footer a:hover { color: var(--text-sec); }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+
+    /* ══════════════ ANIMATIONS ══════════════ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ══════════════ RESPONSIVE ══════════════ */
+    @media (max-width: 768px) {
+      .bento {
+        grid-template-columns: 1fr;
+        padding: 32px 16px 16px;
+      }
+      .hero-main, .hero-links,
+      .exp-bd, .exp-fs,
+      .topic, .speak-strip,
+      .teach,
+      .proj-main, .proj-side,
+      .refs-wrap { grid-column: 1 / -1; }
+
+      .hero-main {
+        flex-direction: column;
+        padding: 28px;
+      }
+      .hero-name { font-size: 24px; }
+      .speak-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .ref-quote { font-size: 16px; }
+      .slide { padding-right: 0; }
+      .section-label { padding: 20px 0 2px; }
+      footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .hero-main { grid-column: span 7; }
+      .hero-links { grid-column: span 5; }
+      .exp-bd { grid-column: span 6; }
+      .exp-fs { grid-column: span 6; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bento">
+
+    <!-- ═══ Hero ═══ -->
+    <div class="card hero-main fade-up">
+      <div class="avatar">SS</div>
+      <div class="hero-content">
+        <h1 class="hero-name">Stefan Schmitt</h1>
+        <div class="hero-sub">
+          Frankfurt <span class="sep">·</span> Blockchain Infrastructure <span class="sep">·</span> GTM &amp; Education
+        </div>
+        <p class="hero-intro">
+          I've spent <strong>seven years</strong> at the intersection of blockchain infrastructure and institutional adoption&thinsp;&mdash;&thinsp;from research at the <strong>Frankfurt School Blockchain Center</strong>, to building <strong>Blockdaemon's</strong> European business as their first sales hire, to teaching digital assets to executives. I like building things: commercial engines, educational programmes, and lately, my own apps.
+        </p>
+      </div>
+    </div>
+
+    <div class="card hero-links fade-up">
+      <a href="mailto:stefan.schmitt.de@googlemail.com" class="link-item">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+        </div>
+        Email
+      </a>
+      <a href="https://linkedin.com/in/stefan-schmitt" target="_blank" class="link-item">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        LinkedIn
+      </a>
+      <a href="#" class="link-item">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        Download CV
+      </a>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Open to speaking
+      </div>
+    </div>
+
+    <!-- ═══ Experience ═══ -->
+    <div class="section-label fade-up">Experience</div>
+
+    <div class="card exp-bd fade-up">
+      <div class="exp-header">
+        <div class="exp-logo">BD</div>
+        <div>
+          <div class="exp-title">Blockdaemon</div>
+          <div class="exp-meta">2020 &mdash; 2026 · 4 roles</div>
+        </div>
+      </div>
+      <p class="exp-text">
+        Joined as the <strong>first sales hire globally</strong>. Built EMEA from zero to <strong>&euro;5M+ pipeline</strong>, closing 50+ enterprise clients across banks, custodians, and asset managers. Evolved into protocol partnerships&thinsp;&mdash;&thinsp;managing 85+ integrations and a <strong>&euro;10M+ partnership pipeline</strong>.
+      </p>
+      <div class="exp-roles">
+        <span class="pill">Protocol Partnerships</span>
+        <span class="pill">Sales Director EMEA</span>
+        <span class="pill">Relationship Manager</span>
+        <span class="pill">Business Development</span>
+      </div>
+    </div>
+
+    <div class="card exp-fs fade-up">
+      <div class="exp-header">
+        <div class="exp-logo">FS</div>
+        <div>
+          <div class="exp-title">Frankfurt School</div>
+          <div class="exp-meta">2016 &mdash; present</div>
+        </div>
+      </div>
+      <p class="exp-text">
+        MSc Finance student, joined the <strong>Blockchain Center</strong> managing EU research projects (&euro;2M budget), then returned as <strong>University Lecturer</strong>&thinsp;&mdash;&thinsp;designing courses on staking, digital assets, and Web3. <strong>200+ professionals taught</strong>.
+      </p>
+      <div class="exp-roles">
+        <span class="pill">University Lecturer</span>
+        <span class="pill">Project Manager, FSBC</span>
+        <span class="pill">Associate, FSBC</span>
+        <span class="pill">MSc Finance &rsquo;18</span>
+      </div>
+    </div>
+
+    <!-- ═══ Speaking ═══ -->
+    <div class="section-label fade-up">Speaking</div>
+
+    <div class="topic fade-up">
+      <div class="card">
+        <div class="topic-title">Staking &amp; Validator Economics</div>
+        <div class="topic-desc">Proof-of-stake mechanics, validator infrastructure, slashing risks, institutional staking operations.</div>
+      </div>
+    </div>
+    <div class="topic fade-up">
+      <div class="card">
+        <div class="topic-title">Institutional Blockchain Adoption</div>
+        <div class="topic-desc">How banks, custodians, and asset managers integrate blockchain infrastructure.</div>
+      </div>
+    </div>
+    <div class="topic fade-up">
+      <div class="card">
+        <div class="topic-title">Product-Market Fit &amp; GTM</div>
+        <div class="topic-desc">Go-to-market for blockchain products. Pipeline building, partnerships, and PMF analysis.</div>
+      </div>
+    </div>
+
+    <div class="card speak-strip fade-up">
+      <div class="events-list">
+        <span class="event-badge">Token 2049</span>
+        <span class="event-badge">Cardano Summit</span>
+        <span class="event-badge">Digital Asset Summit</span>
+        <span class="event-badge">Crypto Assets Conf.</span>
+        <span class="event-badge">Gateway</span>
+        <span class="event-badge">Hedgework</span>
+        <span class="event-badge">Stacks</span>
+        <span style="font-size: 12px; color: var(--text-dim); margin-left: 2px;">+ more</span>
+      </div>
+      <a href="mailto:stefan.schmitt.de@googlemail.com?subject=Speaking%20Inquiry" class="speak-cta">
+        Invite me to speak <span>&rarr;</span>
+      </a>
+    </div>
+
+    <!-- ═══ Teaching ═══ -->
+    <div class="section-label fade-up">Teaching</div>
+
+    <div class="teach fade-up">
+      <div class="card">
+        <div class="teach-org">Frankfurt School of Finance &amp; Management</div>
+        <div class="teach-role">University Lecturer · since 2022</div>
+        <p class="teach-text">Self-designed curricula on staking, digital assets, and Web3 across six programme types. From 12-hour deep-dives on validator architecture to compact executive modules.</p>
+        <div class="prg-row">
+          <span class="prg">MBA</span>
+          <span class="prg">EMBA</span>
+          <span class="prg">MSc Blockchain</span>
+          <span class="prg">MSc Fin. Law</span>
+          <span class="prg">Exec. Education</span>
+          <span class="prg">Bachelor</span>
+        </div>
+      </div>
+    </div>
+    <div class="teach fade-up">
+      <div class="card">
+        <div class="teach-org">European Tech School</div>
+        <div class="teach-role">Guest Lecturer</div>
+        <p class="teach-text">Focused modules for professionals transitioning into Web3 and financial institutions evaluating blockchain infrastructure. Designed for decision-makers who need to evaluate, not build.</p>
+        <div class="prg-row">
+          <span class="prg">Professional Certificate</span>
+          <span class="prg">Executive Module</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Projects ═══ -->
+    <div class="section-label fade-up">Projects</div>
+
+    <div class="card proj-main fade-up">
+      <div>
+        <span class="proj-name">Hiremark</span>
+        <span class="proj-status">Coming Soon</span>
+      </div>
+      <p class="proj-desc">A CRM for job seekers&thinsp;&mdash;&thinsp;pipeline tracking, contact management, interview preparation, and application analytics. Built to bring structure to the job search.</p>
+      <div class="proj-tech">
+        <span>Next.js</span>
+        <span>Supabase</span>
+        <span>PWA</span>
+      </div>
+    </div>
+
+    <div class="card proj-side fade-up">
+      <div class="proj-placeholder">
+        <div class="proj-placeholder-icon">+</div>
+        <span>More in the works</span>
+      </div>
+    </div>
+
+    <!-- ═══ References ═══ -->
+    <div class="section-label fade-up">References</div>
+
+    <div class="card refs-wrap fade-up">
+      <div class="refs-label">
+        What colleagues say
+      </div>
+      <div class="slider">
+        <div class="slider-track">
+          <div class="slide">
+            <p class="ref-quote">If he were to apply at Blockdaemon tomorrow, I would hire him again without hesitation. Any organization that earns his commitment will gain someone who raises the standard for the entire team.</p>
+            <div class="ref-attribution">
+              <div class="ref-avatar">KR</div>
+              <div>
+                <div class="ref-name">Konstantin Richter</div>
+                <div class="ref-role">CEO &amp; Founder, Blockdaemon</div>
+              </div>
+            </div>
+          </div>
+          <div class="slide">
+            <p class="ref-quote">Stefan is the type of professional who makes a sales organization better by being in it. He brings structure, technical depth, and a sincere care for his clients and colleagues.</p>
+            <div class="ref-attribution">
+              <div class="ref-avatar">AV</div>
+              <div>
+                <div class="ref-name">Andrew Vranjes</div>
+                <div class="ref-role">Chief Revenue Officer, Blockdaemon</div>
+              </div>
+            </div>
+          </div>
+          <div class="slide">
+            <p class="ref-quote">Stefan combines analytical rigor with genuine commercial instinct. Direct, honest, always constructive.</p>
+            <div class="ref-attribution">
+              <div class="ref-avatar">DS</div>
+              <div>
+                <div class="ref-name">Demetrios Skalkotos</div>
+                <div class="ref-role">Chief DeFi &amp; Protocol Officer, Blockdaemon</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider-nav">
+        <div class="dot active" data-i="0"></div>
+        <div class="dot" data-i="1"></div>
+        <div class="dot" data-i="2"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="fade-up">
+      <span>&copy; 2026 Stefan Schmitt</span>
+      <ul class="footer-links">
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </footer>
+
+  </div>
+
+  <script>
+    // ── Scroll Animations ──
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+    // ── Reference Slider ──
+    const track = document.querySelector('.slider-track');
+    const dots = document.querySelectorAll('.dot');
+    const refsWrap = document.querySelector('.refs-wrap');
+    let current = 0;
+    const total = 3;
+
+    function goTo(i) {
+      current = ((i % total) + total) % total;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      dots.forEach(function(d, idx) {
+        d.classList.toggle('active', idx === current);
+      });
+    }
+
+    let auto = setInterval(function() { goTo(current + 1); }, 6000);
+
+    dots.forEach(function(d) {
+      d.addEventListener('click', function() {
+        goTo(parseInt(d.dataset.i));
+        clearInterval(auto);
+        auto = setInterval(function() { goTo(current + 1); }, 6000);
+      });
+    });
+
+    refsWrap.addEventListener('mouseenter', function() { clearInterval(auto); });
+    refsWrap.addEventListener('mouseleave', function() {
+      auto = setInterval(function() { goTo(current + 1); }, 6000);
+    });
+  </script>
+
+</body>
+</html>

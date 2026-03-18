@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEFAN SCHMITT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   RESET & BASE
+   ======================================== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background: #f0ece4;
+  color: #0a0a0a;
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: #e63946;
+  color: #f0ece4;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+.font-headline {
+  font-family: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 clamp(16px, 3vw, 48px);
+}
+
+section {
+  border-bottom: 4px solid #0a0a0a;
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #f0ece4;
+  border-bottom: 3px solid #0a0a0a;
+  padding: 12px clamp(16px, 3vw, 48px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.1s;
+  cursor: crosshair;
+}
+
+.nav-links a:hover {
+  border-bottom-color: #e63946;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: crosshair;
+  background: none;
+  border: none;
+  padding: 8px;
+  z-index: 1002;
+}
+
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #0a0a0a;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.hamburger.active span {
+  background: #f0ece4;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Mobile overlay */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  z-index: 1001;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  color: #f0ece4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 0;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.1s, color 0.1s;
+  cursor: crosshair;
+}
+
+.mobile-nav a:hover {
+  color: #e63946;
+  border-bottom-color: #e63946;
+}
+
+/* ========================================
+   HERO
+   ======================================== */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Foto-Hintergrund, füllt alles */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  background: url('stefan-praesentation.jpg') center 20% / cover no-repeat;
+  z-index: 0;
+}
+
+/* Dunkles Panel slided von links rein */
+.hero-panel {
+  position: relative;
+  z-index: 2;
+  width: 52%;
+  min-height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 60px;
+
+  /* Animation: startet unsichtbar (translateX(-100%)), dann slide rein */
+  transform: translateX(-100%);
+  animation: panelSlide 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+}
+
+@keyframes panelSlide {
+  to { transform: translateX(0); }
+}
+
+/* Inhalt im Panel — erst sichtbar wenn Panel da ist */
+.hero-panel-inner {
+  opacity: 0;
+  animation: fadeIn 0.5s ease 1.9s forwards;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.hero-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(24px, 5vw, 56px) clamp(16px, 3vw, 48px);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: #f0ece4;
+}
+
+.hero-name-wrap {
+  padding: clamp(16px, 4vw, 48px) clamp(16px, 3vw, 48px);
+  overflow: hidden;
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 10rem);
+  line-height: 0.85;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+  color: #f0ece4;
+}
+
+.hero-tagline-wrap {
+  padding: clamp(24px, 4vw, 56px) clamp(16px, 3vw, 48px);
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.hero-tagline {
+  border-left: 4px solid #e63946;
+  padding-left: clamp(16px, 2vw, 32px);
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  max-width: 480px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(240, 236, 228, 0.85);
+}
+
+.hero-roles {
+  display: flex;
+}
+
+.hero-role {
+  flex: 1;
+  border-top: 4px solid #f0ece4;
+  border-right: 4px solid #f0ece4;
+  padding: clamp(16px, 2vw, 32px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: crosshair;
+  transition: background 0.1s, color 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #f0ece4;
+}
+
+.hero-role:last-child {
+  border-right: none;
+}
+
+.hero-role:hover {
+  background: #e63946;
+  color: #f0ece4;
+  border-color: #e63946;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: clamp(16px, 2vw, 32px);
+  right: clamp(16px, 3vw, 48px);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+  color: #f0ece4;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 2.2s forwards;
+}
+
+.scroll-arrow {
+  animation: bounce 1.5s ease infinite;
+  font-size: 1.2rem;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ========================================
+   SECTION HEADERS
+   ======================================== */
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 3vw, 48px);
+  border-bottom: 3px solid #0a0a0a;
+  font-weight: 600;
+}
+
+/* ========================================
+   01 / WHAT I DO
+   ======================================== */
+.what-i-do-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.what-card {
+  border-right: 4px solid #0a0a0a;
+  padding: clamp(32px, 4vw, 64px) clamp(28px, 3.5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 420px;
+  cursor: crosshair;
+  transition: background 0.1s, color 0.1s;
+  position: relative;
+}
+
+.what-card:last-child {
+  border-right: none;
+}
+
+.what-card:hover {
+  background: #0a0a0a;
+  color: #f0ece4;
+}
+
+.what-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 20px;
+}
+
+.what-card-text {
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.what-card-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 7vw, 8rem);
+  line-height: 1;
+  opacity: 0.1;
+  margin-top: 32px;
+  text-align: right;
+}
+
+/* ========================================
+   02 / TRACK RECORD
+   ======================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.stat-cell {
+  border-right: 4px solid #0a0a0a;
+  border-bottom: 4px solid #0a0a0a;
+  padding: clamp(28px, 4vw, 56px) clamp(20px, 3vw, 40px);
+  text-align: center;
+}
+
+.stat-cell:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  margin-bottom: 12px;
+  color: #1d4ed8;
+}
+
+.stat-label {
+  font-size: clamp(0.65rem, 0.85vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
+.timeline {
+  padding: clamp(40px, 5vw, 80px) clamp(16px, 3vw, 48px);
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: clamp(140px, 18vw, 220px) 1fr;
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(16px, 2vw, 24px) 0;
+  border-bottom: 1px solid #0a0a0a;
+  align-items: baseline;
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: #1d4ed8;
+  border-radius: 0;
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+.timeline-year {
+  font-weight: 700;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  white-space: nowrap;
+}
+
+.timeline-role {
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+.timeline-role strong {
+  font-weight: 700;
+}
+
+.education-row {
+  display: flex;
+  border-top: 4px solid #0a0a0a;
+}
+
+.edu-cell {
+  flex: 1;
+  padding: clamp(12px, 1.5vw, 20px) clamp(16px, 3vw, 48px);
+  border-right: 4px solid #0a0a0a;
+  font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 16px);
+}
+
+.edu-cell:last-child {
+  border-right: none;
+}
+
+.edu-degree {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.edu-school {
+  font-size: clamp(0.65rem, 0.8vw, 0.75rem);
+  opacity: 0.6;
+}
+
+/* ========================================
+   03 / PROJECTS
+   ======================================== */
+.projects-section {
+  background: #1d4ed8;
+  color: #f0ece4;
+}
+
+.projects-section .section-label {
+  border-bottom-color: #f0ece4;
+}
+
+.project-card {
+  border-bottom: 4px solid #f0ece4;
+  padding: clamp(48px, 6vw, 96px) clamp(16px, 3vw, 48px);
+  cursor: crosshair;
+  transition: background 0.1s, color 0.1s;
+}
+
+.project-card:last-child {
+  border-bottom: none;
+}
+
+.project-card:hover {
+  background: #0a0a0a;
+  color: #f0ece4;
+}
+
+.project-card:hover .project-status {
+  background: #e63946;
+  color: #f0ece4;
+  border-color: #e63946;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: clamp(20px, 3vw, 32px);
+  flex-wrap: wrap;
+}
+
+.project-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 7vw, 7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+}
+
+.project-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #eab308;
+  border: 3px solid #eab308;
+  padding: 6px 16px;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.project-status--live {
+  color: #22c55e;
+  border-color: #22c55e;
+}
+
+.project-status--in-dev {
+  color: #f97316;
+  border-color: #f97316;
+}
+
+.project-status--pre-release {
+  color: #a78bfa;
+  border-color: #a78bfa;
+}
+
+.project-status--coming-soon {
+  color: #eab308;
+  border-color: #eab308;
+}
+
+.project-desc {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  line-height: 1.7;
+  max-width: 700px;
+  margin-bottom: 16px;
+}
+
+.project-tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 2px solid currentColor;
+  padding: 4px 12px;
+  font-weight: 600;
+}
+
+/* ========================================
+   04 / VOICES
+   ======================================== */
+.voices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.voice-card {
+  border-right: 4px solid #0a0a0a;
+  padding: clamp(32px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 340px;
+  position: relative;
+}
+
+.voice-card:last-child {
+  border-right: none;
+}
+
+.voice-quote-mark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 8vw, 10rem);
+  line-height: 0.7;
+  opacity: 0.08;
+  position: absolute;
+  top: clamp(12px, 2vw, 24px);
+  left: clamp(12px, 2vw, 24px);
+  user-select: none;
+}
+
+.voice-text {
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.voice-author {
+  margin-top: 24px;
+  font-size: clamp(0.7rem, 0.85vw, 0.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.voice-title {
+  font-size: clamp(0.65rem, 0.75vw, 0.75rem);
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* ========================================
+   CONNECT
+   ======================================== */
+.connect-section {
+  padding: clamp(64px, 10vw, 160px) clamp(16px, 3vw, 48px);
+}
+
+.connect-headline-wrap {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: clamp(48px, 6vw, 96px);
+}
+
+.connect-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  display: block;
+}
+
+.connect-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.connect-link {
+  border: 4px solid #0a0a0a;
+  border-right: none;
+  padding: clamp(24px, 3.5vw, 48px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  cursor: crosshair;
+  transition: background 0.1s, color 0.1s;
+}
+
+.connect-link:last-child {
+  border-right: 4px solid #0a0a0a;
+}
+
+.connect-link:hover {
+  background: #0a0a0a;
+  color: #f0ece4;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 3vw, 48px);
+  font-size: clamp(0.6rem, 0.75vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-top: none;
+}
+
+.footer a {
+  cursor: crosshair;
+  transition: color 0.1s;
+}
+
+.footer a:hover {
+  color: #e63946;
+}
+
+.footer-right {
+  display: flex;
+  gap: 16px;
+}
+
+/* ========================================
+   SCROLL ANIMATIONS
+   ======================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   TEACHING SECTION
+   ======================================== */
+.teaching-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.teaching-card {
+  border-right: 4px solid #0a0a0a;
+  padding: clamp(32px, 4vw, 64px) clamp(28px, 3.5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 24px);
+  cursor: crosshair;
+  transition: background 0.1s, color 0.1s;
+}
+
+.teaching-card:last-child {
+  border-right: none;
+}
+
+.teaching-card:hover {
+  background: #0a0a0a;
+  color: #f0ece4;
+}
+
+.teaching-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.teaching-card-sub {
+  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+  font-weight: 600;
+}
+
+.teaching-card-text {
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  line-height: 1.7;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hero-panel {
+    width: 100%;
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 14vw, 8rem);
+  }
+
+  .hero-roles {
+    flex-direction: column;
+  }
+
+  .hero-role {
+    border-right: none;
+    border-bottom: 4px solid #f0ece4;
+  }
+
+  .hero-role:last-child {
+    border-bottom: none;
+  }
+
+  .teaching-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teaching-card {
+    border-right: none;
+    border-bottom: 4px solid #0a0a0a;
+  }
+
+  .teaching-card:last-child {
+    border-bottom: none;
+  }
+
+  .what-i-do-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .what-card {
+    border-right: none;
+    border-bottom: 4px solid #0a0a0a;
+    min-height: auto;
+  }
+
+  .what-card:last-child {
+    border-bottom: none;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-cell:nth-child(2) {
+    border-right: none;
+  }
+
+  .stat-cell:nth-child(4) {
+    border-right: none;
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .education-row {
+    flex-direction: column;
+  }
+
+  .edu-cell {
+    border-right: none;
+    border-bottom: 4px solid #0a0a0a;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .edu-cell:last-child {
+    border-bottom: none;
+  }
+
+  .voices-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .voice-card {
+    border-right: none;
+    border-bottom: 4px solid #0a0a0a;
+    min-height: auto;
+  }
+
+  .voice-card:last-child {
+    border-bottom: none;
+  }
+
+  .connect-links {
+    grid-template-columns: 1fr;
+  }
+
+  .connect-link {
+    border-right: 4px solid #0a0a0a;
+    border-bottom: none;
+  }
+
+  .connect-link:last-child {
+    border-bottom: 4px solid #0a0a0a;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .hero-name {
+    font-size: clamp(2.5rem, 13.5vw, 5rem);
+    white-space: normal;
+    word-break: break-all;
+    hyphens: none;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-cell {
+    border-right: none;
+  }
+
+  .project-name {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav">
+  <a href="#" class="nav-logo">Stefan Schmitt</a>
+  <ul class="nav-links">
+    <li><a href="#what-i-do">What I Do</a></li>
+    <li><a href="#track-record">Track Record</a></li>
+    <li><a href="#teaching">Teaching</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile navigation overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#what-i-do" class="mobile-nav-link">What I Do</a>
+  <a href="#track-record" class="mobile-nav-link">Track Record</a>
+  <a href="#teaching" class="mobile-nav-link">Teaching</a>
+  <a href="#connect" class="mobile-nav-link">Connect</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <!-- Foto als Hintergrund -->
+  <div class="hero-photo"></div>
+
+  <!-- Dunkles Panel slided von links rein -->
+  <div class="hero-panel">
+    <div class="hero-panel-inner">
+      <div class="hero-topbar font-mono">
+        <span>Stefan Schmitt</span>
+        <span>2026</span>
+      </div>
+
+      <div class="hero-name-wrap">
+        <span class="hero-name font-headline">Stefan<br>Schmitt</span>
+      </div>
+
+      <div class="hero-tagline-wrap">
+        <p class="hero-tagline">I build commercial engines for blockchain infrastructure &mdash; and teach others how the technology works.</p>
+      </div>
+
+      <div class="hero-roles">
+        <div class="hero-role font-headline">Build</div>
+        <div class="hero-role font-headline">Teach</div>
+        <div class="hero-role font-headline">Advise</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator font-mono">
+    <span>Scroll</span>
+    <span class="scroll-arrow">&darr;</span>
+  </div>
+</section>
+
+<!-- ============ 01 / WHAT I DO ============ -->
+<section id="what-i-do">
+  <div class="section-label reveal">01 / What I Do</div>
+  <div class="what-i-do-grid">
+    <div class="what-card reveal">
+      <div>
+        <div class="what-card-title font-headline">Build</div>
+        <p class="what-card-text">Startups, products, and commercial engines. Currently building Hiremark &mdash; a job search CRM.</p>
+      </div>
+      <div class="what-card-number font-headline">01</div>
+    </div>
+    <div class="what-card reveal">
+      <div>
+        <div class="what-card-title font-headline">Teach</div>
+        <p class="what-card-text">Blockchain, staking, and digital assets at Frankfurt School and European Tech School.</p>
+      </div>
+      <div class="what-card-number font-headline">02</div>
+    </div>
+    <div class="what-card reveal">
+      <div>
+        <div class="what-card-title font-headline">Advise</div>
+        <p class="what-card-text">GTM strategy, enterprise sales, and go-to-market for blockchain infrastructure companies.</p>
+      </div>
+      <div class="what-card-number font-headline">03</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 / TRACK RECORD ============ -->
+<section id="track-record">
+  <div class="section-label reveal">02 / Track Record</div>
+
+  <div class="stats-grid">
+    <div class="stat-cell reveal">
+      <div class="stat-value font-headline">6+</div>
+      <div class="stat-label font-mono">Years Blockchain</div>
+    </div>
+    <div class="stat-cell reveal">
+      <div class="stat-value font-headline">50+</div>
+      <div class="stat-label font-mono">Enterprise Clients</div>
+    </div>
+    <div class="stat-cell reveal">
+      <div class="stat-value font-headline">200+</div>
+      <div class="stat-label font-mono">Professionals Taught</div>
+    </div>
+    <div class="stat-cell reveal">
+      <div class="stat-value font-headline">&euro;20M+</div>
+      <div class="stat-label font-mono">Pipeline Built</div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <span class="timeline-year">2025&ndash;Present</span>
+      <span class="timeline-role"><strong>Protocol Partnerships</strong>, Blockdaemon</span>
+    </div>
+    <div class="timeline-item reveal">
+      <span class="timeline-year">2022&ndash;2025</span>
+      <span class="timeline-role"><strong>Sales Director EMEA</strong>, Blockdaemon</span>
+    </div>
+    <div class="timeline-item reveal">
+      <span class="timeline-year">2021&ndash;2022</span>
+      <span class="timeline-role"><strong>Relationship Manager EMEA &amp; APAC</strong>, Blockdaemon</span>
+    </div>
+    <div class="timeline-item reveal">
+      <span class="timeline-year">2020&ndash;2021</span>
+      <span class="timeline-role"><strong>Business Development</strong>, Blockdaemon (First Sales Hire)</span>
+    </div>
+    <div class="timeline-item reveal">
+      <span class="timeline-year">2018&ndash;2021</span>
+      <span class="timeline-role"><strong>Project Manager</strong>, Frankfurt School Blockchain Center</span>
+    </div>
+  </div>
+
+  <div class="education-row">
+    <div class="edu-cell reveal">
+      <div class="edu-degree font-headline">MSc Finance</div>
+      <div class="edu-school">Frankfurt School of Finance &amp; Management &middot; 2016&ndash;2018</div>
+    </div>
+    <div class="edu-cell reveal">
+      <div class="edu-degree font-headline">BA International Management</div>
+      <div class="edu-school">ISM &middot; 2013&ndash;2016</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 / TEACHING ============ -->
+<section id="teaching">
+  <div class="section-label reveal">03 / Teaching</div>
+  <div class="teaching-grid">
+    <div class="teaching-card reveal">
+      <div class="teaching-card-sub font-mono">Frankfurt School of Finance &amp; Management</div>
+      <div class="teaching-card-title font-headline">Blockchain &amp; Digital Assets</div>
+      <p class="teaching-card-text">Teaching blockchain fundamentals, staking infrastructure, and DeFi to MBA students and executive education participants at one of Europe&rsquo;s leading business schools.</p>
+    </div>
+    <div class="teaching-card reveal">
+      <div class="teaching-card-sub font-mono">European Tech School</div>
+      <div class="teaching-card-title font-headline">Web3 &amp; Crypto Markets</div>
+      <p class="teaching-card-text">Educating the next generation of tech professionals on the mechanics of blockchain protocols, tokenomics, and institutional adoption of digital assets.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONNECT ============ -->
+<section class="connect-section" id="connect">
+  <div class="connect-headline-wrap reveal">
+    <span class="connect-headline font-headline" id="connectHeadline">Let&rsquo;s Talk.</span>
+  </div>
+  <div class="connect-links reveal">
+    <a href="mailto:kontakt@stefanschmitt.biz" class="connect-link">Email</a>
+    <a href="https://linkedin.com/in/stefan--schmitt/" class="connect-link" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://t.me/stefanschmitt" class="connect-link" target="_blank" rel="noopener">Telegram</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <span>&copy; 2026 Stefan Schmitt</span>
+  <div class="footer-right">
+    <a href="impressum.html">Impressum</a>
+  </div>
+</footer>
+
+<!-- ============ JAVASCRIPT ============ -->
+<script>
+(function() {
+  'use strict';
+
+  // --- Hamburger menu ---
+  var hamburger = document.querySelector('.hamburger');
+  var mobileNav = document.getElementById('mobileNav');
+  var mobileLinks = mobileNav.querySelectorAll('a');
+
+  function toggleMenu() {
+    var isOpen = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  for (var i = 0; i < mobileLinks.length; i++) {
+    mobileLinks[i].addEventListener('click', closeMenu);
+  }
+
+  // --- Intersection Observer for reveal animations ---
+  var revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    // Fallback: show everything
+    revealElements.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+  // --- Fluid full-width text sizing (used for hero name + connect headline) ---
+  function fitTextToWidth(el) {
+    if (!el) return;
+
+    var wrap = el.parentElement;
+    var wrapWidth = wrap.clientWidth;
+
+    // Reset to measure naturally
+    el.style.fontSize = '';
+
+    // Binary search for the largest font size that fits
+    var low = 10;
+    var high = 500;
+    var best = low;
+
+    while (low <= high) {
+      var mid = Math.floor((low + high) / 2);
+      el.style.fontSize = mid + 'px';
+
+      if (el.scrollWidth <= wrapWidth) {
+        best = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+
+    el.style.fontSize = best + 'px';
+  }
+
+  var connectHeadlineEl = document.getElementById('connectHeadline');
+
+  function fitAllText() {
+    fitTextToWidth(connectHeadlineEl);
+  }
+
+  fitAllText();
+
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fitAllText, 50);
+  });
+
+  // Run again after fonts load
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitAllText);
+  }
+})();
+</script>
+</body>
+</html>
