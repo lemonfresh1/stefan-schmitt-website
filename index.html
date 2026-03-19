@@ -202,9 +202,6 @@ section {
   z-index: 0;
 }
 
-.hero-photo-img {
-  display: none;
-}
 
 /* Dunkles Panel slided von links rein */
 .hero-panel {
@@ -837,6 +834,7 @@ section {
   .hero {
     flex-direction: column;
     min-height: auto;
+    padding-top: 48px;
   }
 
   .hero-photo {
@@ -845,17 +843,6 @@ section {
     height: 83vw;
     min-height: 370px;
     max-height: 640px;
-    background: none;
-    overflow: hidden;
-  }
-
-  .hero-photo-img {
-    display: block;
-    width: 130%;
-    height: 100%;
-    margin-left: -15%;
-    object-fit: cover;
-    object-position: 70% top;
   }
 
   .hero-panel {
@@ -1043,9 +1030,7 @@ section {
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
   <!-- Foto als Hintergrund -->
-  <div class="hero-photo">
-    <img src="stefan-praesentation.jpg" alt="Stefan Schmitt presenting" class="hero-photo-img">
-  </div>
+  <div class="hero-photo"></div>
 
   <!-- Dunkles Panel slided von links rein -->
   <div class="hero-panel">
